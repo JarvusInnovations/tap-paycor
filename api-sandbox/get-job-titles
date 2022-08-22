@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# import .env
+set -o allexport; source .env; set +o allexport
+
+# load access token from tokens.json
+PAYCOR_ACCESS_TOKEN="$(jq -r '.access_token' .tokens.json)"
+
+# execute request
+curl \
+  "https://apis.paycor.com/v1/tenants/${PAYCOR_TENANT_ID}/jobtitles" \
+  --header "accept: application/json" \
+  --header "Authorization: Bearer ${PAYCOR_ACCESS_TOKEN}" \
+  --header "Ocp-Apim-Subscription-Key: ${PAYCOR_API_SUBSCRIPTION_KEY}" \
+  --fail \
+  --silent \
+  --show-error \
+| jq -r '.records'

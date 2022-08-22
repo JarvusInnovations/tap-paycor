@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# import .env
+set -o allexport; source .env; set +o allexport
+
+# load access token from tokens.json
+PAYCOR_ACCESS_TOKEN="$(jq -r '.access_token' .tokens.json)"
+
+# execute request against top-level API endpoint and count results
+ENTITIES_COUNT=$(
+  curl \
+    "https://apis.paycor.com/v1/legalentities/ActivatedLegalEntityTenantList" \
+    --header "accept: application/json" \
+    --header "Authorization: Bearer ${PAYCOR_ACCESS_TOKEN}" \
+    --header "Ocp-Apim-Subscription-Key: ${PAYCOR_API_SUBSCRIPTION_KEY}" \
+    --fail \
+    --silent \
+    --show-error \
+  | jq -r '.userLegalEntities | length'
+)
+
+# verify that at least 1 tentant was parsed out of response body
+if [ -n "${ENTITIES_COUNT}" ] && [ "${ENTITIES_COUNT}" -ge "1" ]; then
+  echo "Connection successful, found access to ${ENTITIES_COUNT} entities"
+  exit 0
+else
+  echo "Failed to access entities list"
+  exit 1
+fi

@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# check first if refresh is needed
+echo
+echo "==> access-refresh: checking if existing token is valid…"
+if ./access-validate; then
+  echo "Existing token is valid, skipping refresh"
+  exit 0
+fi
+
+# import .env
+set -o allexport; source .env; set +o allexport
+
+# load refresh token from tokens.json
+PAYCOR_REFRESH_TOKEN="$(jq -r '.refresh_token' .tokens.json)"
+
+# execute request to refresh tokens
+echo
+echo "==> access-refresh: requesting new tokens from Paycor API…"
+RESPONSE_STATUS=$(
+  curl --request POST \
+    --url "https://apis.paycor.com/sts/v1/common/token?subscription-key=${PAYCOR_API_SUBSCRIPTION_KEY}" \
+    --header "content-type: application/x-www-form-urlencoded" \
+    --data "grant_type=refresh_token" \
+    --data "refresh_token=${PAYCOR_REFRESH_TOKEN}" \
+    --data "client_id=${PAYCOR_CLIENT_ID}" \
+    --data "client_secret=${PAYCOR_CLIENT_SECRET}" \
+    --silent \
+    --show-error \
+    --write-out '%{http_code}' \
+    --output ".tokens.tmp.json"
+)
+
+if [ "${RESPONSE_STATUS}" = "200" ]; then
+  echo "New token acquired, writing to .tokens.json"
+  mv -v ".tokens.tmp.json" ".tokens.json"
+  exit 0
+else
+  echo "Failed to acquire token, Paycor returned HTTP status ${RESPONSE_STATUS}"
+  exit 1
+fi
