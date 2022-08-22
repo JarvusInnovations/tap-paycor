@@ -2,6 +2,12 @@
 
 A Singer tap for Paycor
 
+## Useful links
+
+- [Paycor Developer Guides](https://developers.paycor.com/guides)
+- [Paycor App Creator Portal](https://developers.paycor.com/app-creator/summary)
+- [Paycor OpenAPI test console](https://developers.paycor.com/try)
+
 ## API Sandbox
 
 The `./api-sandbox` directory contains a set of bash scripts for demonstrating access to desired data as well as for managing authorization credentials.
