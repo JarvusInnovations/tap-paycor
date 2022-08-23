@@ -34,6 +34,9 @@ RESPONSE_STATUS=$(
 if [ "${RESPONSE_STATUS}" = "200" ]; then
   echo "New token acquired, writing to .tokens.json"
   mv -v ".tokens.tmp.json" ".tokens.json"
+  echo "Building .config.json"
+  jq ".api_subscription_key = \"${PAYCOR_API_SUBSCRIPTION_KEY}\" | .tenant_id = \"${PAYCOR_TENANT_ID}\" | .legal_entity_id = \"${PAYCOR_LEGAL_ENTITY_ID}\"" .tokens.json > .config.json
+  echo "Done"
   exit 0
 else
   echo "Failed to acquire token, Paycor returned HTTP status ${RESPONSE_STATUS}"

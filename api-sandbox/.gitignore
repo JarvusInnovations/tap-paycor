@@ -1,3 +1,4 @@
 .env
 .tokens.tmp.json
 .tokens.json
+.config.json
