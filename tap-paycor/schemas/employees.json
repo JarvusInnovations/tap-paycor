@@ -110,7 +110,6 @@
                 }
               }
             },
-  
       "statusData": {
         "type": ["null", "array"],
         "items": {
@@ -158,119 +157,6 @@
               "type": ["null", "string"]
             }
           }  
-        }
-      },
-      "earnings": {
-        "type": ["null", "array"],
-        "items": {
-          "type": ["null", "object"],
-          "properties": {
-            "id": {
-              "type": ["null", "string"]
-            },
-            "url": {
-              "type": ["null", "string"]
-            }
-          }
-        }  
-      },
-
-      "deductions": {
-        "type": ["null", "array"],
-        "items": {
-          "type": ["null", "object"],
-          "properties": {
-            "id": {
-              "type": ["null", "string"]
-            },
-            "url": {
-              "type": ["null", "string"]
-            }
-          }  
-      }
-    },
-      "taxes": {
-        "type": ["null", "array"],
-        "items": {
-          "type": ["null", "object"],
-          "properties": {
-            "id": {
-              "type": ["null", "string"]
-            },
-            "url": {
-              "type": ["null", "string"]
-            }
-          }
-        }  
-      },
-      "directDeposits": {
-        "type": ["null", "array"],
-        "items": {
-          "type": ["null", "object"],
-          "properties": {
-            "id": {
-              "type": ["null", "string"]
-            },
-            "url": {
-              "type": ["null", "string"]
-            }
-          }
-        }  
-      },
-      "payRates": {
-        "type": ["null", "array"],
-        "items": {
-          "type": ["null", "object"],
-          "properties": {
-            "id": {
-              "type": ["null", "string"]
-            },
-            "url": {
-              "type": ["null", "string"]
-            }
-          }
-        }  
-      },
-      "legalEntity": {
-        "type": ["null", "array"],
-        "items": {
-          "type": ["null", "object"],
-          "properties": {
-            "id": {
-              "type": ["null", "string"]
-            },
-            "url": {
-              "type": ["null", "string"]
-            }
-          }
-        }  
-      },
-      "person": {
-        "type": ["null", "array"],
-        "items": {
-          "type": ["null", "object"],
-          "properties": {
-            "id": {
-              "type": ["null", "string"]
-            },
-            "url": {
-              "type": ["null", "string"]
-            }
-          }
-        }  
-      },
-      "department": {
-        "type": ["null", "array"],
-        "items": {
-          "type": ["null", "object"],
-          "properties": {
-            "id": {
-              "type": ["null", "string"]
-            },
-            "url": {
-              "type": ["null", "string"]
-            }
-          }
         }
       }
     }
