@@ -65,21 +65,21 @@ def sync(config, state, catalog):
             schema=stream.schema.to_dict(),
             key_properties=stream.key_properties,
         )
-        max_bookmark = None
-        for row in tap_data():
-            # TODO: place type conversions or transformations here
-
+        has_more_results = True
+        
+        while has_more_results:
+            r = requests.get(url, headers=headers)
+            tap_data = r.json()
+            for row in tap_data['records']:
+                LOGGER.info("Syncing {}".format(row))
+    
             # write one or more rows to the stream:
-            singer.write_record(stream.tap_stream_id, tap_data, time_extracted=singer.utils.now())
-            if bookmark_column:
-                if is_sorted:
-                    # update bookmark to latest value
-                    singer.write_state({stream.tap_stream_id: row[bookmark_column]})
-                else:
-                    # if data unsorted, save max value until end of writes
-                    max_bookmark = max(max_bookmark, row[bookmark_column])
-        if bookmark_column and not is_sorted:
-            singer.write_state({stream.tap_stream_id: max_bookmark})
+                singer.write_record(stream.tap_stream_id, tap_data, time_extracted=singer.utils.now())
+            if tap_data['hasMoreResults']:
+                LOGGER.info("Grabbing another page")
+                url = f"https://apis.paycor.com/{tap_data['additionalResultsUrl']}"
+            else:
+                has_more_results = False
     return
 
 
