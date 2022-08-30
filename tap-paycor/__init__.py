@@ -6,7 +6,7 @@ from singer.catalog import Catalog, CatalogEntry
 from singer.schema import Schema
 
 
-REQUIRED_CONFIG_KEYS = ["access_token", "token_type", "expires_in", "refresh_token", "api_subscription_key", "tenant_id", "legal_entity_id"] 
+REQUIRED_CONFIG_KEYS = ["access_token", "refresh_token", "api_subscription_key", "legal_entity_id"] 
 LOGGER = singer.get_logger()
 
 
