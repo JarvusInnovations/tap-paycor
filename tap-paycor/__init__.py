@@ -63,7 +63,12 @@ def sync(config, state, catalog):
     subscription_key = data['api_subscription_key']
     entity_id = data['legal_entity_id']
 
-
+    url = f"https://apis.paycor.com/v1/legalentities/{entity_id}/employees?include=All"
+    headers = {
+        "accept": "application/json",
+        "Authorization" : access_token,
+        "Ocp-Apim-Subscription-Key": subscription_key
+    }
 
     """ Sync data from tap source """
     # Loop over selected streams in catalog, while we dont use state is require for get_selected_streams method
@@ -72,13 +77,6 @@ def sync(config, state, catalog):
 
         bookmark_column = stream.replication_key
         is_sorted = True  # TODO: indicate whether data is sorted ascending on bookmark value
-
-        url = f"https://apis.paycor.com/v1/legalentities/{entity_id}/employees?include=All"
-        headers = {
-            "accept": "application/json",
-            "Authorization" : access_token,
-            "Ocp-Apim-Subscription-Key": subscription_key
-            }
 
         singer.write_schema(
             stream_name=stream.tap_stream_id,
