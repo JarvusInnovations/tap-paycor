@@ -53,6 +53,18 @@ def discover():
 
 
 def sync(config, state, catalog):
+    bookmark_property = 'updated_at'
+
+    """ Get request access credentials from config"""
+
+    with open('../api-sandbox/.config.json') as f:
+        data = json.load(f)
+    access_token = "Bearer " + data["access_token"]
+    subscription_key = data['api_subscription_key']
+    entity_id = data['legal_entity_id']
+
+
+
     """ Sync data from tap source """
     # Loop over selected streams in catalog, while we dont use state is require for get_selected_streams method
     for stream in catalog.get_selected_streams(state):
@@ -60,6 +72,13 @@ def sync(config, state, catalog):
 
         bookmark_column = stream.replication_key
         is_sorted = True  # TODO: indicate whether data is sorted ascending on bookmark value
+
+        url = f"https://apis.paycor.com/v1/legalentities/{entity_id}/employees?include=All"
+        headers = {
+            "accept": "application/json",
+            "Authorization" : access_token,
+            "Ocp-Apim-Subscription-Key": subscription_key
+            }
 
         singer.write_schema(
             stream_name=stream.tap_stream_id,
