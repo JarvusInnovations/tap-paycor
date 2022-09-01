@@ -188,3 +188,10 @@ Traceback (most recent call last):
 Exception: Message is missing required key 'key_properties': {'stream': 'exchange_rate', 'schema': {'properties': {'date': {'format': 'date-time', 'type': 'string'}}, 'additionalProperties': True, 'type': 'object'}, 'type': 'SCHEMA'}
 ```
 
+### Common Error responses
+
+If you return this message when running singer-check-tap:
+
+`simplejson.scanner.JSONDecodeError: Expecting value: line 1 column 1 (char 0)`
+
+It means you need to refresh the token.
