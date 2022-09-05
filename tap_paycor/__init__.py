@@ -57,8 +57,7 @@ def sync(config, state, catalog):
 
     """ Get request access credentials from config"""
 
-    with open(config) as f:
-        data = json.load(f)
+    data = json.load(config)
     access_token = "Bearer " + data["access_token"]
     subscription_key = data['api_subscription_key']
     entity_id = data['legal_entity_id']
