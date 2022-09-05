@@ -57,7 +57,7 @@ def sync(config, state, catalog):
 
     """ Get request access credentials from config"""
 
-    with open('../api-sandbox/.config.json') as f:
+    with open(config) as f:
         data = json.load(f)
     access_token = "Bearer " + data["access_token"]
     subscription_key = data['api_subscription_key']
