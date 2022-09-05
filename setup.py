@@ -18,7 +18,9 @@ setup(name='tap-paycor',
       ''',
       packages=['tap_paycor'],
       package_data = {
-          'tap_paycor': ['tap_paycor/schemas/*.json']
+          'tap_paycor/schemas': [
+              'employees.json'
+          ],
       },
       include_package_data=True
 )
