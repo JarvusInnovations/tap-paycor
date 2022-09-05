@@ -16,7 +16,7 @@ setup(name='tap-paycor',
           [console_scripts]
           tap-paycor=tap_paycor:main
       ''',
-      packages=['tap_paycor'],
+      packages=find_packages(),
       package_data = {
           'tap_paycor/schemas': [
               'employees.json'
