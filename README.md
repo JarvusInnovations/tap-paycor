@@ -10,7 +10,7 @@ This is a [Singer](https://singer.io) tap that produces JSON-formatted data foll
 
 ## API Sandbox
 
-The `./api-sandbox` directory contains a set of bash scripts for demonstrating access to desired data as well as for managing authorization credentials.
+The `./api-sandbox` directory contains a set of bash scripts for demonstrating access to desired data as well as for managing authorization credentials. The directory contains scripts that developers may find helpful in exploring the API. The `access-refresh` and the `get-employees` scripts are particularly helpful for testing.
 
 ### Authorization credentials
 
@@ -95,33 +95,61 @@ To make authenticated calls with it:
 ## Using the tap
 
 Once proper access has been verified, run the tap:
+1. Install
 
-1. Obtain the catalog
+    pip install tap-paycor
+
+2. Create the config file
+
+    Create a JSON file called `config.json`. Its contents should look like:
+
+   ```json
+
+    {
+        "access_token": "your-token",
+        "expires_in": 1800,
+        "token_type": "Bearer",
+        "refresh_token": "your-refresh-token",
+        "api_subscription_key": "your-key",
+        "tenant_id": "123456",
+        "start_date": "YYYY-MM-DD",
+        "legal_entity_id": "678910"
+    }
+
+    ```
+
+    For help with IDs Within Paycor
+    * ClientId = LegalEntityId
+    * TenentId = CompanyId
+    * EmployeeId is not visible in Paycor's UI, you must retrieve it from the Public API
+
+    CONFIG is a required argument that points to a JSON file containing any
+    configuration parameters the Tap needs. This tap supports [discovery mode](DISCOVERY_MODE.md), which is used to obtain the catalog.
+
+3. Obtain the catalog
 
 ```bash
 tap-paycor --config config.json --discover > catalog.json
 ```
 
-CONFIG is a required argument that points to a JSON file containing any
-configuration parameters the Tap needs. This tap supports [discovery mode](DISCOVERY_MODE.md), which is used to obtain the catalog.
-2. Alter the catalog
-Within the catalog.json file, you may need to add metadata in the catalog for [stream/field selection](SYNC_MODE.md#streamfield-selection) or [replication-method](SYNC_MODE.md#replication-method).
+4. Alter the catalog
+    Within the catalog.json file, you may need to add metadata in the catalog for [stream/field selection](SYNC_MODE.md#streamfield-selection) or [replication-method](SYNC_MODE.md#replication-method).
 
-Below `"stream": "employees",` Add
+    Below `"stream": "employees",` Add
 
-```json
-"metadata": [
-        {
-          "breadcrumb": [],
-          "metadata": {
-          "selected": true
-          }
-        }
-      ]
-```
+    ```json
+    "metadata": [
+            {
+            "breadcrumb": [],
+            "metadata": {
+            "selected": true
+            }
+            }
+        ]
+    ```
 
-This will select the employee stream.
-3. Run the Tap in sync mode
+    This will select the employee stream.
+5. Run the Tap in sync mode
 
 ```bash
 tap-paycor --config tap_config.json --catalog catalog.json
