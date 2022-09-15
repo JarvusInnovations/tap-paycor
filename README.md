@@ -75,6 +75,26 @@ Assumming you've already run `cd ./api-sandbox/` and verified an access token is
     ./get-entities
     ```
 
+### Testing schema
+
+The included `employees.json` schema can be verified by testing it against real API results:
+
+1. Install `ajv` command:
+
+    ```bash
+    npm install -g ajv-cli ajv-formats
+    ```
+
+2. Validate API results against schema wrapped in array definition:
+
+    ```bash
+    ajv validate \
+        --strict=true \
+        -c ajv-formats \
+        -s <(jq '{type: "array", items: .}' ../tap-paycor/schemas/employees.json) \
+        -d <(./get-employees)
+
+    ```
 ## Working with Paycor's API console
 
 Paycor has an OpenAPI console hosted at <https://developers.paycor.com/try>
