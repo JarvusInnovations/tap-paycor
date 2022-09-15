@@ -2,6 +2,19 @@
   "type": "object",
   "description": "The Employee model represents all Employee related information.\n Provides links to the Employee's associated Person, Legal Entity, Department, Earning, Deduction, Tax, Direct Deposit, Pay Rat and Custom Field information.",
   "additionalProperties": true,
+  "required": [
+    "id",
+    "employeeNumber",
+    "badgeNumber",
+    "firstName",
+    "middleName",
+    "lastName",
+    "email",
+    "employmentDateData",
+    "positionData",
+    "statusData",
+    "workLocation"
+  ],
   "properties": {
     "id": {
       "type": "string",
@@ -50,6 +63,10 @@
         "null"
       ],
       "additionalProperties": false,
+      "required": [
+        "type",
+        "emailAddress"
+      ],
       "properties": {
         "type": {
           "type": "string",
@@ -75,6 +92,14 @@
       ],
       "description": "The Employment Date Data represents the Employee's Employment Date information.",
       "additionalProperties": false,
+      "required": [
+        "hireDate",
+        "adjustedHireDate",
+        "terminationDate",
+        "terminationReason",
+        "reHireDate",
+        "seniorityDate"
+      ],
       "properties": {
         "hireDate": {
           "type": [
@@ -132,6 +157,14 @@
       ],
       "description": "The Employee Position Data model represents the Employee's Position related data.",
       "additionalProperties": false,
+      "required": [
+        "jobTitle",
+        "jobCode",
+        "effectiveStartDate",
+        "effectiveEndDate",
+        "payGroupId",
+        "manager"
+      ],
       "properties": {
         "jobTitle": {
           "type": [
@@ -175,6 +208,10 @@
           ],
           "description": "The Manager model represents information about the Employee's Manager.\nProvides link to the Manager's Employee level information.",
           "additionalProperties": true,
+          "required": [
+            "id",
+            "employeeNumber"
+          ],
           "properties": {
             "id": {
               "type": "string",
@@ -199,6 +236,12 @@
       ],
       "description": "The Employee Status Data model represents Employee Employment Status information.",
       "additionalProperties": false,
+      "required": [
+        "isFullTime",
+        "status",
+        "flsa",
+        "type"
+      ],
       "properties": {
         "isFullTime": {
           "type": [
@@ -260,6 +303,15 @@
       ],
       "description": "The Employee Work Location Data model represents the Employee's Work Location related data.",
       "additionalProperties": false,
+      "required": [
+        "streetLine1",
+        "type",
+        "city",
+        "county",
+        "state",
+        "zipCode",
+        "country"
+      ],
       "properties": {
         "streetLine1": {
           "type": [
