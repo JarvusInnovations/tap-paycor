@@ -1,7 +1,7 @@
 {
   "type": "object",
   "description": "The Employee model represents all Employee related information.\n Provides links to the Employee's associated Person, Legal Entity, Department, Earning, Deduction, Tax, Direct Deposit, Pay Rat and Custom Field information.",
-  "additionalProperties": false,
+  "additionalProperties": true,
   "properties": {
     "Id": {
       "type": "string",
@@ -156,7 +156,7 @@
           "nullable": true,
           "type": "object",
           "description": "The Manager model represents information about the Employee's Manager.\nProvides link to the Manager's Employee level information.\n            ",
-          "additionalProperties": false,
+          "additionalProperties": true,
           "properties": {
             "Id": {
               "type": "string",
@@ -169,12 +169,6 @@
               "description": "Employee number of the employee's manager.\n            ",
               "nullable": true,
               "example": 234444
-            },
-            "Employee": {
-              "description": "URL to access the Employee resource for additional information about the employee's manager.\n            ",
-              "nullable": true,
-              "example": "/v1/employees/26413223-196c-0000-0000-0007d54d9839",
-              "$ref": "#/components/schemas/ResourceReference"
             }
           }
         }
@@ -330,54 +324,6 @@
           "example": "USA"
         }
       }
-    },
-    "Earnings": {
-      "description": "URL to access the Earnings resource for employee earnings information. \n            ",
-      "nullable": true,
-      "example": "/v1/employees/66925f42-196c-0000-0000-0007d54d9839/earnings",
-      "$ref": "#/components/schemas/ResourceReference"
-    },
-    "Deductions": {
-      "description": "URL to access the Deductions resource for employee deductions information. \n            ",
-      "nullable": true,
-      "example": "/v1/employees/66925f42-196c-0000-0000-0007d54d9839/deductions",
-      "$ref": "#/components/schemas/ResourceReference"
-    },
-    "Taxes": {
-      "description": "URL to access the Taxes resource for employee tax information. \n            ",
-      "nullable": true,
-      "example": "/v1/employees/66925f42-196c-0000-0000-0007d54d9839/taxes",
-      "$ref": "#/components/schemas/ResourceReference"
-    },
-    "DirectDeposits": {
-      "description": "URL to access the Direct Deposits resource for employee direct deposit information. \n            ",
-      "nullable": true,
-      "example": "/v1/employees/66925f42-196c-0000-0000-0007d54d9839/directDeposits",
-      "$ref": "#/components/schemas/ResourceReference"
-    },
-    "PayRates": {
-      "description": "URL to access the PayRates resource for employee pay rate information. \n            ",
-      "nullable": true,
-      "example": "/v1/employees/66925f42-196c-0000-0000-0007d54d9839/payRates",
-      "$ref": "#/components/schemas/ResourceReference"
-    },
-    "LegalEntity": {
-      "description": "URL to access the Legal Entity resource. \n            ",
-      "nullable": true,
-      "example": "/v1/legalentities/501123",
-      "$ref": "#/components/schemas/ResourceReference"
-    },
-    "Person": {
-      "description": "URL to access the Persons resource for employee information.\n            ",
-      "nullable": true,
-      "example": "/v1/500198/persons/66925f42-196c-0000-0000-0007d54d9839",
-      "$ref": "#/components/schemas/ResourceReference"
-    },
-    "Department": {
-      "description": "URL to access the Department resource for information about the employee's department.\n            ",
-      "nullable": true,
-      "example": "/v1/employees/66925f42-196c-0000-0000-0007d54d9839/department",
-      "$ref": "#/components/schemas/ResourceReference"
     }
   }
 }
