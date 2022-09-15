@@ -54,10 +54,6 @@
         "Type": {
           "type": "string",
           "description": "Enumeration of valid email type values.",
-          "x-enumNames": [
-            "Home",
-            "Work"
-          ],
           "enum": [
             "Home",
             "Work"
@@ -214,22 +210,6 @@
         "Status": {
           "type": "string",
           "description": "Enumeration of valid Employment Status values.",
-          "x-enumNames": [
-            "Unknown",
-            "Active",
-            "Deceased",
-            "LongTermDisability",
-            "ShortTermDisability",
-            "Fmla",
-            "LaidOff",
-            "LeaveWithPay",
-            "LeaveWithoutPay",
-            "ThirdPartyPayable",
-            "Resigned",
-            "Retired",
-            "Terminated",
-            "WorkersCompensation"
-          ],
           "enum": [
             "Unknown",
             "Active",
@@ -250,13 +230,6 @@
         "Flsa": {
           "type": "string",
           "description": "Enumeration of valid Types of Fair Labor Standards Act (FLSA) employment values.",
-          "x-enumNames": [
-            "Unknown",
-            "HourlyExempt",
-            "HourlyNonExempt",
-            "SalaryExempt",
-            "SalaryNonExempt"
-          ],
           "enum": [
             "Unknown",
             "HourlyExempt",
@@ -268,15 +241,6 @@
         "Type": {
           "type": "string",
           "description": "Enumeration of valid Employment Type values.",
-          "x-enumNames": [
-            "Unknown",
-            "Casual",
-            "IndependentContractor",
-            "Regular",
-            "Seasonal",
-            "Temporary",
-            "Variable"
-          ],
           "enum": [
             "Unknown",
             "Casual",
@@ -307,11 +271,6 @@
         "Type": {
           "type": "string",
           "description": "Enumeration of valid Type of Work Location Address values.",
-          "x-enumNames": [
-            "Physical",
-            "Mailing",
-            "Unknown"
-          ],
           "enum": [
             "Physical",
             "Mailing",
