@@ -8,14 +8,23 @@ This is a [Singer](https://singer.io) tap that produces JSON-formatted data foll
 - [Paycor App Creator Portal](https://developers.paycor.com/app-creator/summary)
 - [Paycor OpenAPI test console](https://developers.paycor.com/try)
 
-## API Sandbox
-
-The `./api-sandbox` directory contains a set of bash scripts for demonstrating access to desired data as well as for managing authorization credentials. The directory contains scripts that developers may find helpful in exploring the API. The `access-refresh` and the `get-employees` scripts are particularly helpful for testing.
-
-### Authorization credentials
+## Gaining API access
 
 Paycor uses a very strict implementation of OAuth. Access tokens expire after 30 minutes, and refresh tokens **are only valid for a single use**. This means that after any successful call to get a new access token, the new refresh token returned along side it **must be captured** or the customer admin will have to be asked to go through "activation" again for us.
 
+### Obtaining initial tokens
+
+Once an initial set of access+refresh tokens are obtained, they can be continuously refreshed by your application via the refresh token. Initially obtaining the token requires the following steps be taken by a user with administrative access to Paycor. No other type of user will be able to complete the process, despite it appearing in the Paycor developer UI like you can.
+
+1. Open <https://hcm.paycor.com/appactivation/clientactivation>
+2. Login with your admin Paycor account
+3. Select your client application (there is likely only one available) and accept terms
+4. Fill in Client ID and Client Secret from the developer portal
+5. Capture both the access and refresh tokens provided
+
+## API Sandbox
+
+The `./api-sandbox` directory contains a set of bash scripts for demonstrating access to desired data as well as for managing authorization credentials. The directory contains scripts that developers may find helpful in exploring the API. The `access-refresh` and the `get-employees` scripts are particularly helpful for testing.
 ### Getting started
 
 1. Create new `.env` file:
