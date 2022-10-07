@@ -52,6 +52,32 @@ def discover():
     return Catalog(streams)
 
 
+def refresh_token(args):
+    root_url = 'https://apis.paycor.com'
+    config = args.config
+    key = os.environ['PAYCOR_API_SUBSCRIPTION_KEY']
+    url = f"{root_url}/sts/v1/common/token?subscription-key={key}"
+    headers = { "content-type": "application/x-www-form-urlencoded" }
+    data = {
+        "grant_type": "refresh_token",
+        "refresh_token": os.environ["PAYCOR_REFRESH_TOKEN"],
+        "client_id": os.environ["PAYCOR_CLIENT_ID"],
+        "client_secret": os.environ["PAYCOR_CLIENT_SECRET"],
+    }
+    response = requests.post(url, data=data, headers=headers)
+    try:
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as error:
+        # todo need someway to log and notify. DAG is dead until this is fixed
+        raise error
+
+    # update args with new config
+    args.config = response.json()
+
+    # write new config to disk
+    with open(args.config_path, 'w') as f:
+        f.write(args.config)
+
 def sync(config, STATE, catalog):
     bookmark_property = 'updated_at'
 
@@ -106,6 +132,7 @@ def sync(config, STATE, catalog):
 def main():
     # Parse command line arguments
     args = utils.parse_args(REQUIRED_CONFIG_KEYS)
+    refresh_token(args)
 
     # If discover flag was passed, run discovery mode and dump output to stdout
     if args.discover:
