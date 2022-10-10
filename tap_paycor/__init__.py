@@ -54,15 +54,14 @@ def discover():
 
 def refresh_token(args):
     root_url = 'https://apis.paycor.com'
-    config = args.config
-    key = os.environ['PAYCOR_API_SUBSCRIPTION_KEY']
+    key = args.config['api_subscription_key']
     url = f"{root_url}/sts/v1/common/token?subscription-key={key}"
     headers = { "content-type": "application/x-www-form-urlencoded" }
     data = {
         "grant_type": "refresh_token",
-        "refresh_token": os.environ["PAYCOR_REFRESH_TOKEN"],
-        "client_id": os.environ["PAYCOR_CLIENT_ID"],
-        "client_secret": os.environ["PAYCOR_CLIENT_SECRET"],
+        "refresh_token": args.config['refresh_token'],
+        "client_id": args.config['client_id'],
+        "client_secret": args.config['client_secret'],
     }
     response = requests.post(url, data=data, headers=headers)
     try:
