@@ -72,7 +72,9 @@ def refresh_token(args):
         raise error
 
     # update args with new config
-    args.config = response.json()
+    data = response.json()
+    args.config['access_token'] = data['access_token']
+    args.config['refresh_token'] = data['refresh_token']
 
     # write new config to disk
     with open(args.config_path, 'w') as f:
