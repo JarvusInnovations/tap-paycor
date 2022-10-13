@@ -1,0 +1,15 @@
+{
+    "type": "object",
+    "description": "Employee Time Off Request model represents information about time off requests for specific employee.",
+    "additionalProperties": true,
+    "required": [
+        "timeOffRequestId"
+    ],
+    "properties": {
+        "timeOffRequestId": {
+            "type": "string",
+            "description": "Unique identifier of this time off request.",
+            "format": "uuid"
+        }
+    }
+}
