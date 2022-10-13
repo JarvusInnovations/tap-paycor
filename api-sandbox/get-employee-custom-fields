@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# import .env
+set -o allexport; source .env; set +o allexport
+
+# load access token from tokens.json
+PAYCOR_ACCESS_TOKEN="$(jq -r '.access_token' .tokens.json)"
+
+# this call must be made for each employee
+EMPLOYEE_ID="${1:?"Usage: get-custom-fields <employee_id>"}"
+
+# execute request
+curl \
+  "https://${PAYCOR_API_HOST:-apis.paycor.com}/v1/employees/${EMPLOYEE_ID}/customfields" \
+  --header "accept: application/json" \
+  --header "Authorization: Bearer ${PAYCOR_ACCESS_TOKEN}" \
+  --header "Ocp-Apim-Subscription-Key: ${PAYCOR_API_SUBSCRIPTION_KEY}" \
+  --fail \
+  --silent \
+  --show-error \
+| jq -r '.records'
+
+# NOTE: this only grabs the first page of records, adjacent to
+# the `records` key are the keys `hasMoreResults` and
+# `continuationToken` for fetching subsequent pages
+
