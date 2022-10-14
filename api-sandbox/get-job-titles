@@ -8,7 +8,7 @@ PAYCOR_ACCESS_TOKEN="$(jq -r '.access_token' .tokens.json)"
 
 # execute request
 curl \
-  "https://apis.paycor.com/v1/tenants/${PAYCOR_TENANT_ID}/jobtitles" \
+  "https://${PAYCOR_API_HOST:-apis.paycor.com}/v1/tenants/${PAYCOR_TENANT_ID}/jobtitles" \
   --header "accept: application/json" \
   --header "Authorization: Bearer ${PAYCOR_ACCESS_TOKEN}" \
   --header "Ocp-Apim-Subscription-Key: ${PAYCOR_API_SUBSCRIPTION_KEY}" \

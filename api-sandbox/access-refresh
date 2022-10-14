@@ -19,7 +19,7 @@ echo
 echo "==> access-refresh: requesting new tokens from Paycor API…"
 RESPONSE_STATUS=$(
   curl --request POST \
-    --url "https://apis.paycor.com/sts/v1/common/token?subscription-key=${PAYCOR_API_SUBSCRIPTION_KEY}" \
+    --url "https://${PAYCOR_API_HOST:-apis.paycor.com}/sts/v1/common/token?subscription-key=${PAYCOR_API_SUBSCRIPTION_KEY}" \
     --header "content-type: application/x-www-form-urlencoded" \
     --data "grant_type=refresh_token" \
     --data "refresh_token=${PAYCOR_REFRESH_TOKEN}" \
