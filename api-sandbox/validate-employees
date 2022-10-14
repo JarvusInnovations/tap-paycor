@@ -1,0 +1,15 @@
+#!/bin/bash
+
+temp_schema="$(gmktemp --suffix=.employees.schema.json)"
+jq '{type: "array", items: .}' ../tap_paycor/schemas/employees.json > "${temp_schema}"
+echo "Generated schema: ${temp_schema}"
+
+temp_data="$(gmktemp --suffix=.employees.data.json)"
+./get-employees > "${temp_data}"
+echo "Downloaded data: ${temp_data}"
+
+ajv validate \
+    --strict=true \
+    -c ajv-formats \
+    -s "${temp_schema}" \
+    -d "${temp_data}"

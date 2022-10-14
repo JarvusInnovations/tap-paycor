@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# this call must be made for each employee
+EMPLOYEE_ID="${1:?"Usage: get-custom-fields <employee_id>"}"
+
+temp_schema="$(gmktemp --suffix=.employee-custom-fields.schema.json)"
+jq '{type: "array", items: .}' ../tap_paycor/schemas/employee_custom_fields.json > "${temp_schema}"
+echo "Generated schema: ${temp_schema}"
+
+temp_data="$(gmktemp --suffix=.employee-custom-fields.data.json)"
+./get-employee-custom-fields "${EMPLOYEE_ID}" > "${temp_data}"
+echo "Downloaded data: ${temp_data}"
+
+ajv validate \
+    --strict=true \
+    -c ajv-formats \
+    -s "${temp_schema}" \
+    -d "${temp_data}"

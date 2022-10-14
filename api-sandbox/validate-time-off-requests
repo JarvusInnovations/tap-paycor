@@ -1,0 +1,15 @@
+#!/bin/bash
+
+temp_schema="$(gmktemp --suffix=.time-off-requests.schema.json)"
+jq '{type: "array", items: .}' ../tap_paycor/schemas/time_off_requests.json > "${temp_schema}"
+echo "Generated schema: ${temp_schema}"
+
+temp_data="$(gmktemp --suffix=.time-off-requests.data.json)"
+./get-time-off-requests > "${temp_data}"
+echo "Downloaded data: ${temp_data}"
+
+ajv validate \
+    --strict=true \
+    -c ajv-formats \
+    -s "${temp_schema}" \
+    -d "${temp_data}"
