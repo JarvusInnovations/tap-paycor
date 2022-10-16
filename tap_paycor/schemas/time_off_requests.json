@@ -1,15 +1,130 @@
 {
     "type": "object",
     "description": "Employee Time Off Request model represents information about time off requests for specific employee.",
-    "additionalProperties": true,
-    "required": [
-        "timeOffRequestId"
-    ],
+    "additionalProperties": false,
     "properties": {
+        "legalEntityId": {
+            "type": "integer",
+            "format": "int32"
+        },
         "timeOffRequestId": {
             "type": "string",
             "description": "Unique identifier of this time off request.",
-            "format": "uuid"
+            "format": "guid"
+        },
+        "benefitCode": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "totalHours": {
+            "type": "number",
+            "description": "Total amount of hours inside this time off request.",
+            "format": "decimal"
+        },
+        "days": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "description": "Collection of days for this time off request.",
+            "items": {
+                "xml": {
+                    "name": "TimeOffRequestDay"
+                },
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "timeOffRequestDayId": {
+                        "type": "string",
+                        "description": "Unique identifier of specific day inside time off request model.",
+                        "format": "guid"
+                    },
+                    "date": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "Date for Time off request day",
+                        "format": "date-time"
+                    },
+                    "hours": {
+                        "type": "number",
+                        "description": "Total amount of hours for this day.",
+                        "format": "decimal"
+                    },
+                    "startTime": {
+                        "type": "string",
+                        "description": "Exact start date and time for this day",
+                        "format": "date-time"
+                    },
+                    "endTime": {
+                        "type": "string",
+                        "description": "Exact end date and time for this day",
+                        "format": "date-time"
+                    },
+                    "isPartial": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "timeOffRequestDayId",
+                    "hours",
+                    "startTime",
+                    "endTime",
+                    "isPartial"
+                ]
+            }
+        },
+        "comment": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "description": "Additional comment for this time off request. Optional. Currently not available in Get Employee Time Off Requests by EmployeeId."
+        },
+        "status": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "description": "Status of this time off request.\nStatus could be Pending, Approved, Denied, Removed, Canceled or empty"
+        },
+        "createdDate": {
+            "type": "string",
+            "description": "Date and time when this time off request is created.",
+            "format": "date-time"
+        },
+        "statusUpdateTime": {
+            "type": "string",
+            "description": "Date and time when is the status of this time off request updated.",
+            "format": "date-time"
+        },
+        "statusUpdateByEmployeeId": {
+            "type": "string",
+            "description": "Unique identifier of employee who is updated status.",
+            "format": "guid"
+        },
+        "createdByEmployeeId": {
+            "type": "string",
+            "description": "Unique identifier of employee who is created this time off request.",
+            "format": "guid"
+        },
+        "employeeId": {
+            "type": "string",
+            "description": "Unique identifier of this employee.",
+            "format": "guid"
         }
-    }
+    },
+    "required": [
+        "legalEntityId",
+        "timeOffRequestId",
+        "totalHours",
+        "createdDate",
+        "statusUpdateTime",
+        "statusUpdateByEmployeeId",
+        "createdByEmployeeId",
+        "employeeId"
+    ]
 }

@@ -7,7 +7,19 @@ from singer.schema import Schema
 import requests
 
 
-REQUIRED_CONFIG_KEYS = ["access_token", "refresh_token", "api_subscription_key", "legal_entity_id"] 
+REQUIRED_CONFIG_KEYS = [
+    "access_token",
+    "refresh_token",
+    "api_subscription_key",
+    "legal_entity_id",
+    "tenant_id",
+    "legal_entity_id",
+    "client_secret",
+    "client_id",
+    "api_host",
+]
+
+
 LOGGER = singer.get_logger()
 STATE = {}
 
@@ -53,7 +65,7 @@ def discover():
 
 
 def refresh_token(args):
-    root_url = 'https://apis.paycor.com'
+    root_url = 'https://' + args.config.get('api_host', 'apis.paycor.com')
     key = args.config['api_subscription_key']
     url = f"{root_url}/sts/v1/common/token?subscription-key={key}"
     headers = { "content-type": "application/x-www-form-urlencoded" }
@@ -77,7 +89,7 @@ def refresh_token(args):
 
     # write new config to disk
     with open(args.config_path, 'w') as f:
-        f.write(args.config)
+        f.write(json.dumps(args.config, indent=2))
 
 def sync(config, STATE, catalog):
     bookmark_property = 'updated_at'
@@ -89,7 +101,8 @@ def sync(config, STATE, catalog):
     subscription_key = data['api_subscription_key']
     entity_id = data['legal_entity_id']
 
-    url = f"https://apis.paycor.com/v1/legalentities/{entity_id}/employees?include=All"
+    root_url = 'https://' + config.get('api_host', 'apis.paycor.com')
+    url = f"{root_url}/v1/legalentities/{entity_id}/employees?include=All"
     headers = {
         "accept": "application/json",
         "Authorization" : access_token,
@@ -122,7 +135,7 @@ def sync(config, STATE, catalog):
                 singer.write_record(stream.tap_stream_id, row, time_extracted=singer.utils.now())
             if tap_data['hasMoreResults']:
                 LOGGER.info("Grabbing another page")
-                url = f"https://apis.paycor.com/{tap_data['additionalResultsUrl']}"
+                url = f"{root_url}/{tap_data['additionalResultsUrl']}"
             else:
                 has_more_results = False
     ##singer.write_state(STATE)
