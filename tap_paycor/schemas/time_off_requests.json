@@ -2,15 +2,24 @@
     "type": "object",
     "description": "Employee Time Off Request model represents information about time off requests for specific employee.",
     "additionalProperties": false,
+    "required": [
+        "legalEntityId",
+        "timeOffRequestId",
+        "totalHours",
+        "createdDate",
+        "statusUpdateTime",
+        "statusUpdateByEmployeeId",
+        "createdByEmployeeId",
+        "employeeId"
+    ],
     "properties": {
         "legalEntityId": {
-            "type": "integer",
-            "format": "int32"
+            "type": "integer"
         },
         "timeOffRequestId": {
             "type": "string",
             "description": "Unique identifier of this time off request.",
-            "format": "guid"
+            "format": "uuid"
         },
         "benefitCode": {
             "type": [
@@ -20,8 +29,7 @@
         },
         "totalHours": {
             "type": "number",
-            "description": "Total amount of hours inside this time off request.",
-            "format": "decimal"
+            "description": "Total amount of hours inside this time off request."
         },
         "days": {
             "type": [
@@ -30,16 +38,13 @@
             ],
             "description": "Collection of days for this time off request.",
             "items": {
-                "xml": {
-                    "name": "TimeOffRequestDay"
-                },
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
                     "timeOffRequestDayId": {
                         "type": "string",
                         "description": "Unique identifier of specific day inside time off request model.",
-                        "format": "guid"
+                        "format": "uuid"
                     },
                     "date": {
                         "type": [
@@ -51,8 +56,7 @@
                     },
                     "hours": {
                         "type": "number",
-                        "description": "Total amount of hours for this day.",
-                        "format": "decimal"
+                        "description": "Total amount of hours for this day."
                     },
                     "startTime": {
                         "type": "string",
@@ -104,27 +108,17 @@
         "statusUpdateByEmployeeId": {
             "type": "string",
             "description": "Unique identifier of employee who is updated status.",
-            "format": "guid"
+            "format": "uuid"
         },
         "createdByEmployeeId": {
             "type": "string",
             "description": "Unique identifier of employee who is created this time off request.",
-            "format": "guid"
+            "format": "uuid"
         },
         "employeeId": {
             "type": "string",
             "description": "Unique identifier of this employee.",
-            "format": "guid"
+            "format": "uuid"
         }
-    },
-    "required": [
-        "legalEntityId",
-        "timeOffRequestId",
-        "totalHours",
-        "createdDate",
-        "statusUpdateTime",
-        "statusUpdateByEmployeeId",
-        "createdByEmployeeId",
-        "employeeId"
-    ]
+    }
 }
