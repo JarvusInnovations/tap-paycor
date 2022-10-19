@@ -51,8 +51,7 @@
                             "string",
                             "null"
                         ],
-                        "description": "Date for Time off request day",
-                        "format": "date-time"
+                        "description": "Date for Time off request day"
                     },
                     "hours": {
                         "type": "number",
@@ -60,13 +59,12 @@
                     },
                     "startTime": {
                         "type": "string",
-                        "description": "Exact start date and time for this day",
-                        "format": "date-time"
+                        "description": "Exact start date and time for this day"
                     },
                     "endTime": {
                         "type": "string",
-                        "description": "Exact end date and time for this day",
-                        "format": "date-time"
+                        "description": "Exact end date and time for this day"
+
                     },
                     "isPartial": {
                         "type": "boolean"
@@ -97,13 +95,11 @@
         },
         "createdDate": {
             "type": "string",
-            "description": "Date and time when this time off request is created.",
-            "format": "date-time"
+            "description": "Date and time when this time off request is created."
         },
         "statusUpdateTime": {
             "type": "string",
-            "description": "Date and time when is the status of this time off request updated.",
-            "format": "date-time"
+            "description": "Date and time when is the status of this time off request updated."
         },
         "statusUpdateByEmployeeId": {
             "type": "string",

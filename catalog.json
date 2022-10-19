@@ -35,7 +35,6 @@
                 },
                 "date": {
                   "description": "Date for Time off request day",
-                  "format": "date-time",
                   "type": [
                     "string",
                     "null"
@@ -48,12 +47,10 @@
                 },
                 "startTime": {
                   "description": "Exact start date and time for this day",
-                  "format": "date-time",
                   "type": "string"
                 },
                 "endTime": {
                   "description": "Exact end date and time for this day",
-                  "format": "date-time",
                   "type": "string"
                 },
                 "isPartial": {
@@ -85,12 +82,10 @@
           },
           "createdDate": {
             "description": "Date and time when this time off request is created.",
-            "format": "date-time",
             "type": "string"
           },
           "statusUpdateTime": {
             "description": "Date and time when is the status of this time off request updated.",
-            "format": "date-time",
             "type": "string"
           },
           "statusUpdateByEmployeeId": {
@@ -190,7 +185,6 @@
             "properties": {
               "birthDate": {
                 "description": "Date of birth of the person following the ISO 8601 standard.\nThis data will only be available for Get Person (returns single Person object) APIs and will always be null for Get Persons (returns list of Person) APIs.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard)",
-                "format": "date-time",
                 "type": [
                   "string",
                   "null"
@@ -343,7 +337,6 @@
               },
               "dischargeDate": {
                 "description": "Discharge date of the person from the military per US protected veteran definition. \nAvailable only if person's veteran status is 'true'.\n             Format: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard)",
-                "format": "date-time",
                 "type": [
                   "string",
                   "null"
@@ -684,7 +677,6 @@
             "properties": {
               "hireDate": {
                 "description": "Date the employee was hired.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) ",
-                "format": "date-time",
                 "type": [
                   "string",
                   "null"
@@ -692,7 +684,6 @@
               },
               "adjustedHireDate": {
                 "description": "Adjusted hire date is used when the employee's hire date does not accurately reflect benefits eligibility because an employee may have left, \nbeen rehired or taken a Leave of Absence. This provides an alternative date for the employee's accruals to be calculated on.\n Format: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) ",
-                "format": "date-time",
                 "type": [
                   "string",
                   "null"
@@ -700,7 +691,6 @@
               },
               "terminationDate": {
                 "description": "Date the employee was terminated.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) ",
-                "format": "date-time",
                 "type": [
                   "string",
                   "null"
@@ -715,7 +705,6 @@
               },
               "reHireDate": {
                 "description": "Re-hire date of the employee. Terminated employees can be rehired.\n Format: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) ",
-                "format": "date-time",
                 "type": [
                   "string",
                   "null"
@@ -723,7 +712,6 @@
               },
               "seniorityDate": {
                 "description": "Date on which the calculation of an employee's seniority is based.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) ",
-                "format": "date-time",
                 "type": [
                   "string",
                   "null"
@@ -755,7 +743,6 @@
               },
               "effectiveStartDate": {
                 "description": "Date the employee position data takes effect.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) ",
-                "format": "date-time",
                 "type": [
                   "string",
                   "null"
@@ -763,7 +750,7 @@
               },
               "effectiveEndDate": {
                 "description": "Date the employee position data is no longer in effect.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) ",
-                "format": "date-time",
+
                 "type": [
                   "string",
                   "null"
@@ -953,7 +940,6 @@
           },
           "dateModified": {
             "description": "Date when custom field value was last modified.",
-            "format": "date-time",
             "type": [
               "string",
               "null"

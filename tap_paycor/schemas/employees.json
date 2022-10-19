@@ -106,24 +106,21 @@
                         "string",
                         "null"
                     ],
-                    "description": "Date the employee was hired.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) ",
-                    "format": "date-time"
+                    "description": "Date the employee was hired.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) "
                 },
                 "adjustedHireDate": {
                     "type": [
                         "string",
                         "null"
                     ],
-                    "description": "Adjusted hire date is used when the employee's hire date does not accurately reflect benefits eligibility because an employee may have left, \nbeen rehired or taken a Leave of Absence. This provides an alternative date for the employee's accruals to be calculated on.\n Format: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) ",
-                    "format": "date-time"
+                    "description": "Adjusted hire date is used when the employee's hire date does not accurately reflect benefits eligibility because an employee may have left, \nbeen rehired or taken a Leave of Absence. This provides an alternative date for the employee's accruals to be calculated on.\n Format: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) "
                 },
                 "terminationDate": {
                     "type": [
                         "string",
                         "null"
                     ],
-                    "description": "Date the employee was terminated.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) ",
-                    "format": "date-time"
+                    "description": "Date the employee was terminated.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) "
                 },
                 "terminationReason": {
                     "type": [
@@ -137,16 +134,14 @@
                         "string",
                         "null"
                     ],
-                    "description": "Re-hire date of the employee. Terminated employees can be rehired.\n Format: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) ",
-                    "format": "date-time"
+                    "description": "Re-hire date of the employee. Terminated employees can be rehired.\n Format: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) "
                 },
                 "seniorityDate": {
                     "type": [
                         "string",
                         "null"
                     ],
-                    "description": "Date on which the calculation of an employee's seniority is based.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) ",
-                    "format": "date-time"
+                    "description": "Date on which the calculation of an employee's seniority is based.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) "
                 }
             }
         },
@@ -185,16 +180,14 @@
                         "string",
                         "null"
                     ],
-                    "description": "Date the employee position data takes effect.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) ",
-                    "format": "date-time"
+                    "description": "Date the employee position data takes effect.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) "
                 },
                 "effectiveEndDate": {
                     "type": [
                         "string",
                         "null"
                     ],
-                    "description": "Date the employee position data is no longer in effect.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) ",
-                    "format": "date-time"
+                    "description": "Date the employee position data is no longer in effect.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard) "
                 },
                 "payGroupId": {
                     "type": "string",

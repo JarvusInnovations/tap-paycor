@@ -131,8 +131,7 @@
                         "string",
                         "null"
                     ],
-                    "description": "Date of birth of the person following the ISO 8601 standard.\nThis data will only be available for Get Person (returns single Person object) APIs and will always be null for Get Persons (returns list of Person) APIs.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard)",
-                    "format": "date-time"
+                    "description": "Date of birth of the person following the ISO 8601 standard.\nThis data will only be available for Get Person (returns single Person object) APIs and will always be null for Get Persons (returns list of Person) APIs.\nFormat: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard)"
                 },
                 "gender": {
                     "description": "Enumeration of valid Gender values.",
@@ -346,8 +345,7 @@
                         "string",
                         "null"
                     ],
-                    "description": "Discharge date of the person from the military per US protected veteran definition. \nAvailable only if person's veteran status is 'true'.\n             Format: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard)",
-                    "format": "date-time"
+                    "description": "Discharge date of the person from the military per US protected veteran definition. \nAvailable only if person's veteran status is 'true'.\n             Format: YYYY-MM-DDTHH:MM:SSZ  (ISO-8601 standard)"
                 },
                 "isArmedForcesServiceMedalVeteran": {
                     "type": [

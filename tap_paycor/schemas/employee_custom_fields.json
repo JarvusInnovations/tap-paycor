@@ -65,8 +65,7 @@
                 "string",
                 "null"
             ],
-            "description": "Date when custom field value was last modified.",
-            "format": "date-time"
+            "description": "Date when custom field value was last modified."
         },
         "employee": {
             "description": "The Resource Reference model is used to provide URL links to resources.",
