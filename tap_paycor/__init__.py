@@ -1,3 +1,4 @@
+import datetime
 import os
 import json
 import singer
@@ -91,55 +92,90 @@ def refresh_token(args):
     with open(args.config_path, 'w') as f:
         f.write(json.dumps(args.config, indent=2))
 
+
 def sync(config, STATE, catalog):
     bookmark_property = 'updated_at'
+    employee_ids = None
+    for stream in catalog.get_selected_streams(STATE):
+        singer.write_schema(
+            stream_name=stream.tap_stream_id,
+            schema=stream.schema.to_dict(),
+            key_properties=stream.key_properties,
+        )
+        if stream.tap_stream_id == 'employee_custom_fields':
+            if employee_ids is None:
+                # this must be handled in employees
+                raise ValueError('You must tap employees before employee_custom_fields')
+            for employee_id in employee_ids:
+                get_records(config, stream, employee_id)
+            continue
+        elif stream.tap_stream_id == 'time_off_requests':
+            start_date = datetime.date.today() + datetime.timedelta(days=-364)
+            final_date = datetime.date.today() + datetime.timedelta(days=365)
+            while start_date < final_date:
+                get_records(config, stream, start_date=start_date)
+                start_date += datetime.timedelta(days=90)
+        else:
+            record_ids = get_records(config, stream)
+        if stream.tap_stream_id == 'employees':
+            employee_ids = record_ids
 
-    """ Get request access credentials from config"""
 
-    data = config
-    access_token = "Bearer " + data["access_token"]
-    subscription_key = data['api_subscription_key']
-    entity_id = data['legal_entity_id']
+def get_records(config, stream, employee_id=None, start_date=None):
+    entity_id = config['legal_entity_id']
+    tap_stream_id = stream.tap_stream_id
+    if tap_stream_id == 'employees':
+        path = f"/v1/legalentities/{entity_id}/employees?include=All"
+    elif tap_stream_id == 'persons':
+        path = f'/v1/legalEntities/{entity_id}/persons'
+    elif tap_stream_id == 'employee_custom_fields':
+        path = f'/v1/employees/{employee_id}/customfields'
+    elif tap_stream_id == 'time_off_requests':
+        end_date = start_date + datetime.timedelta(90)
+        qs = f'startDate={start_date}&endDate={end_date}'
+        path = f'/v1/legalentities/{entity_id}/timeoffrequests?{qs}'
+    else:
+        raise NotImplementedError(f'Unknown tap stream: {tap_stream_id}')
+
+    access_token = "Bearer " + config["access_token"]
+    subscription_key = config['api_subscription_key']
 
     root_url = 'https://' + config.get('api_host', 'apis.paycor.com')
-    url = f"{root_url}/v1/legalentities/{entity_id}/employees?include=All"
     headers = {
         "accept": "application/json",
         "Authorization" : access_token,
         "Ocp-Apim-Subscription-Key": subscription_key
     }
 
-    """ Sync data from tap source """
-    # Loop over selected streams in catalog, while we dont use state is require for get_selected_streams method
-    for stream in catalog.get_selected_streams(STATE):
-        LOGGER.info("Syncing stream:" + stream.tap_stream_id)
+    url = f"{root_url}/{path}"
+    LOGGER.info("Syncing stream:" + stream.tap_stream_id)
 
-        bookmark_column = stream.replication_key
-        is_sorted = True  # TODO: indicate whether data is sorted ascending on bookmark value
+    bookmark_column = stream.replication_key
+    is_sorted = True  # TODO: indicate whether data is sorted ascending on bookmark value
 
-        singer.write_schema(
-            stream_name=stream.tap_stream_id,
-            schema=stream.schema.to_dict(),
-            key_properties=stream.key_properties,
-        )
-        has_more_results = True
-        
-        while has_more_results:
-            r = requests.get(url, headers=headers)
-            tap_data = r.json()
-            for row in tap_data['records']:
-                LOGGER.info("Syncing {}".format(row))
-    
-            # write one or more rows to the stream:
-                ##utils.update_state(STATE, row, singer.utils.now())
-                singer.write_record(stream.tap_stream_id, row, time_extracted=singer.utils.now())
-            if tap_data['hasMoreResults']:
-                LOGGER.info("Grabbing another page")
-                url = f"{root_url}/{tap_data['additionalResultsUrl']}"
-            else:
-                has_more_results = False
+    has_more_results = True
+    ids = []
+
+    while True:
+        r = requests.get(url, headers=headers)
+        tap_data = r.json()
+        if 'is invalid or has no' in tap_data.get('Detail', ''):
+            # When there are no entities, Paycor sends back a 400 with a message like
+            # 'Either Legal Entity ID ### is invalid or has no TimeOff requests.'
+            break
+        for row in tap_data['records']:
+            LOGGER.info(f"Syncing {stream.tap_stream_id} {row}")
+
+            singer.write_record(stream.tap_stream_id, row, time_extracted=singer.utils.now())
+            record = row.get('record', row)
+            ids.append(row.get('id') or row.get('customFieldId'))
+        if not tap_data['hasMoreResults']:
+            break
+        LOGGER.info("Grabbing another page")
+        url = f"{root_url}/{tap_data['additionalResultsUrl']}"
+
+    return ids
     ##singer.write_state(STATE)
-    return
 
 
 @utils.handle_top_exception(LOGGER)
