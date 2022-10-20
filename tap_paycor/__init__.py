@@ -93,7 +93,8 @@ def refresh_token(args):
         f.write(json.dumps(args.config, indent=2))
 
 
-def sync(config, STATE, catalog):
+def sync(args, STATE, catalog):
+    config = args.config
     bookmark_property = 'updated_at'
     employee_ids = None
     for stream in catalog.get_selected_streams(STATE):
@@ -107,21 +108,42 @@ def sync(config, STATE, catalog):
                 # this must be handled in employees
                 raise ValueError('You must tap employees before employee_custom_fields')
             for employee_id in employee_ids:
-                get_records(config, stream, employee_id)
+                get_records(args, stream, employee_id)
             continue
         elif stream.tap_stream_id == 'time_off_requests':
             start_date = datetime.date.today() + datetime.timedelta(days=-364)
             final_date = datetime.date.today() + datetime.timedelta(days=365)
             while start_date < final_date:
-                get_records(config, stream, start_date=start_date)
-                start_date += datetime.timedelta(days=90)
+                get_records(args, stream, start_date=start_date)
+                start_date += datetime.timedelta(days=91)
         else:
-            record_ids = get_records(config, stream)
+            record_ids = get_records(args, stream)
         if stream.tap_stream_id == 'employees':
             employee_ids = record_ids
 
 
-def get_records(config, stream, employee_id=None, start_date=None):
+def get_headers(args):
+    access_token = "Bearer " + args.config["access_token"]
+    subscription_key = args.config['api_subscription_key']
+
+    return {
+        "accept": "application/json",
+        "Authorization" : access_token,
+        "Ocp-Apim-Subscription-Key": subscription_key
+    }
+
+
+def get_request(url, args):
+    response = requests.get(url, headers=get_headers(args))
+    if response.status_code == 401:
+        LOGGER.info('refreshin')
+        refresh_token(args)
+        response = requests.get(url, headers=get_headers(args))
+    return response
+
+
+def get_records(args, stream, employee_id=None, start_date=None):
+    config = args.config
     entity_id = config['legal_entity_id']
     tap_stream_id = stream.tap_stream_id
     if tap_stream_id == 'employees':
@@ -137,18 +159,9 @@ def get_records(config, stream, employee_id=None, start_date=None):
     else:
         raise NotImplementedError(f'Unknown tap stream: {tap_stream_id}')
 
-    access_token = "Bearer " + config["access_token"]
-    subscription_key = config['api_subscription_key']
-
     root_url = 'https://' + config.get('api_host', 'apis.paycor.com')
-    headers = {
-        "accept": "application/json",
-        "Authorization" : access_token,
-        "Ocp-Apim-Subscription-Key": subscription_key
-    }
 
-    url = f"{root_url}/{path}"
-    LOGGER.info("Syncing stream:" + stream.tap_stream_id)
+    url = f"{root_url}{path}"
 
     bookmark_column = stream.replication_key
     is_sorted = True  # TODO: indicate whether data is sorted ascending on bookmark value
@@ -157,14 +170,17 @@ def get_records(config, stream, employee_id=None, start_date=None):
     ids = []
 
     while True:
-        r = requests.get(url, headers=headers)
+        LOGGER.info(f"getting {stream.tap_stream_id} at url {url}")
+        start = datetime.datetime.now()
+        r = get_request(url, args)
+        LOGGER.info(f'{r.status_code} {(datetime.datetime.now()-start).total_seconds()}')
         tap_data = r.json()
         if 'is invalid or has no' in tap_data.get('Detail', ''):
             # When there are no entities, Paycor sends back a 400 with a message like
             # 'Either Legal Entity ID ### is invalid or has no TimeOff requests.'
             break
         for row in tap_data['records']:
-            LOGGER.info(f"Syncing {stream.tap_stream_id} {row}")
+            # LOGGER.info(f"Syncing {stream.tap_stream_id} {row}")
 
             singer.write_record(stream.tap_stream_id, row, time_extracted=singer.utils.now())
             record = row.get('record', row)
@@ -172,17 +188,15 @@ def get_records(config, stream, employee_id=None, start_date=None):
         if not tap_data['hasMoreResults']:
             break
         LOGGER.info("Grabbing another page")
-        url = f"{root_url}/{tap_data['additionalResultsUrl']}"
+        url = f"{root_url}{tap_data['additionalResultsUrl']}"
 
     return ids
-    ##singer.write_state(STATE)
 
 
 @utils.handle_top_exception(LOGGER)
 def main():
     # Parse command line arguments
     args = utils.parse_args(REQUIRED_CONFIG_KEYS)
-    refresh_token(args)
 
     # If discover flag was passed, run discovery mode and dump output to stdout
     if args.discover:
@@ -194,7 +208,7 @@ def main():
             catalog = args.catalog
         else:
             catalog = discover()
-        sync(args.config, args.state, catalog)
+        sync(args, args.state, catalog)
 
 
 if __name__ == "__main__":
