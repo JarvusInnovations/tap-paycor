@@ -82,6 +82,7 @@ def refresh_token(args):
         response.raise_for_status()
     except requests.exceptions.HTTPError as error:
         # todo need someway to log and notify. DAG is dead until this is fixed
+        LOGGER.error(f"Token refresh response: {response.content}")
         raise error
 
     # update args with new config
