@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# import .env
+set -o allexport; source .env; set +o allexport
+
+# load access token from tokens.json
+PAYCOR_ACCESS_TOKEN="$(jq -r '.access_token' .tokens.json)"
+
+# we can only request specific 90 day windows at a time, starting up to 1 year back
+START_DATE=$(date +%Y-%m-%d -d "1 year ago + 1 day")
+END_DATE=$(date +%Y-%m-%d -d "1 year ago + 91 days")
+
+# execute request
+curl \
+  "https://${PAYCOR_API_HOST:-apis.paycor.com}/v1/legalentities/${PAYCOR_LEGAL_ENTITY_ID}/timeoffrequests?startDate=${START_DATE}&endDate=${END_DATE}" \
+  --header "accept: application/json" \
+  --header "Authorization: Bearer ${PAYCOR_ACCESS_TOKEN}" \
+  --header "Ocp-Apim-Subscription-Key: ${PAYCOR_API_SUBSCRIPTION_KEY}" \
+  --fail \
+  --silent \
+  --show-error \
+| jq -r '.records'
+
+# NOTE: this only grabs the first page of records, adjacent to
+# the `records` key are the keys `hasMoreResults` and
+# `continuationToken` for fetching subsequent pages
+
