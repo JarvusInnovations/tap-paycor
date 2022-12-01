@@ -3,8 +3,8 @@
 # import .env
 set -o allexport; source .env; set +o allexport
 
-# load access token from tokens.json
-PAYCOR_ACCESS_TOKEN="$(jq -r '.access_token' .tokens.json)"
+# load access token from config.json
+PAYCOR_ACCESS_TOKEN="$(jq -r '.access_token' .config.json)"
 
 # execute request against top-level API endpoint and count results
 ENTITIES_COUNT=$(

@@ -12,7 +12,7 @@ fi
 set -o allexport; source .env; set +o allexport
 
 # load refresh token from tokens.json
-PAYCOR_REFRESH_TOKEN="$(jq -r '.refresh_token' .tokens.json)"
+PAYCOR_REFRESH_TOKEN="$(jq -r '.refresh_token' .config.json)"
 
 # execute request to refresh tokens
 echo
