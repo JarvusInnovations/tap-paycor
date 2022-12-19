@@ -35,23 +35,25 @@ def load_schemas():
         path = get_abs_path('schemas') + '/' + filename
         file_raw = filename.replace('.json', '')
         with open(path) as file:
-            schemas[file_raw] = Schema.from_dict(json.load(file))
+            data = json.load(file)
+            schemas[file_raw] = {
+                "schema": Schema.from_dict(data['schema']),
+                "key_properties": data['key_properties']
+            }
     return schemas
 
 
 def discover():
     raw_schemas = load_schemas()
     streams = []
-    for stream_id, schema in raw_schemas.items():
-        # TODO: populate any metadata and stream's key properties here..
+    for stream_id, stream_data in raw_schemas.items():
         stream_metadata = []
-        key_properties = []
         streams.append(
             CatalogEntry(
                 tap_stream_id=stream_id,
                 stream=stream_id,
-                schema=schema,
-                key_properties=key_properties,
+                schema=stream_data['schema'],
+                key_properties=stream_data['key_properties'],
                 metadata=stream_metadata,
                 replication_key=None,
                 is_view=None,
