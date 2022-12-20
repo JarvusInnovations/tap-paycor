@@ -69,7 +69,7 @@ def discover():
 
 def refresh_token(args):
     root_url = 'https://' + args.config.get('api_host', 'apis.paycor.com')
-    LOGGER.info(f"refreshing token against {root_url}")
+    LOGGER.info(f"refreshing secret token against {root_url}")
     key = args.config['api_subscription_key']
     url = f"{root_url}/sts/v1/common/token?subscription-key={key}"
     headers = { "content-type": "application/x-www-form-urlencoded" }
@@ -95,7 +95,7 @@ def refresh_token(args):
     # write new config to disk
     with open(args.config_path, 'w') as f:
         f.write(json.dumps(args.config, indent=2))
-        LOGGER.info(f"wrote updated tokens to {args.config_path}")
+        LOGGER.info(f"wrote updated secret tokens to {args.config_path}")
 
 
 def sync(args, STATE, catalog):
