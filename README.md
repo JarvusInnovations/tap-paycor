@@ -135,6 +135,8 @@ Once proper access has been verified, run the tap:
    ```json
 
     {
+        "client_id": "your-application-oauth-client-id",
+        "client_secret": "your-application-oauth-client-secret",
         "access_token": "your-token",
         "expires_in": 1800,
         "token_type": "Bearer",
@@ -146,11 +148,6 @@ Once proper access has been verified, run the tap:
     }
 
     ```
-
-    For help with IDs Within Paycor
-    * ClientId = LegalEntityId
-    * TenentId = CompanyId
-    * EmployeeId is not visible in Paycor's UI, you must retrieve it from the Public API
 
     CONFIG is a required argument that points to a JSON file containing any
     configuration parameters the Tap needs. This tap supports [discovery mode](DISCOVERY_MODE.md), which is used to obtain the catalog.
