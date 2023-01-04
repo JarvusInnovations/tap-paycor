@@ -141,6 +141,7 @@ def get_headers(args):
 def get_request(url, args):
     response = requests.get(url, headers=get_headers(args))
     if response.status_code == 401:
+        LOGGER.info('Caught 401 response, refreshing secret token before retrying...')
         refresh_token(args)
         response = requests.get(url, headers=get_headers(args))
     return response
@@ -183,11 +184,11 @@ def get_records(args, stream, employee_id=None, start_date=None):
             # When there are no entities, Paycor sends back a 400 with a message like
             # 'Either Legal Entity ID ### is invalid or has no TimeOff requests.'
             break
-        for row in tap_data['records']:
+        for row in tap_data['records']: # looks like we need to catch `KeyError: 'records'` here
             # LOGGER.info(f"Syncing {stream.tap_stream_id} {row}")
 
             singer.write_record(stream.tap_stream_id, row, time_extracted=singer.utils.now())
-            record = row.get('record', row)
+            record = row.get('record', row) # what's this doing? can it be deleted?
             ids.append(row.get('id') or row.get('customFieldId'))
         if not tap_data['hasMoreResults']:
             break
